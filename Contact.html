@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gia Luu — Portfolio</title>
+
+  <!-- SEO & Share -->
+  <meta name="description" content="Gia Luu – Front‑end developer crafting clean, modern experiences with delightful motion and accessibility in mind." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cpath fill='%231e3a8a' d='M64 6 10 64l54 58 54-58z'/%3E%3Cpath fill='%23e2e8f0' d='M64 22 26 64l38 42 38-42z'/%3E%3C/svg%3E" />
+  <meta property="og:title" content="Gia Luu — Portfolio" />
+  <meta property="og:description" content="Clean UI, smooth interactions, accessible by default." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://dummyimage.com/1200x630/1e3a8a/ffffff.png&text=Gia+Luu+Portfolio" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* =========================
+       Cloudy Aesthetic Theme (Light + Dark using CSS vars)
+       ========================= */
+    :root{
+      --hdr:72px;            /* header height */
+      --padX:2rem;           /* consistent horizontal padding */
+      /* Lighter sky palette (light) */
+      --bg:#f9fdff;          /* almost-white sky */
+      --fg:#0a2533;          /* readable deep slate */
+      --muted:#567789;       /* soft blue-gray */
+      --card:rgba(255,255,255,.56); /* airier glass card */
+      --line:#e5f2fb;        /* lighter airy border */
+      --pri:#5ab8ff;         /* lighter sky blue */
+      --pri-2:#2797ea;       /* medium sky */
+      --glow:0 6px 20px rgba(90,184,255,.12);
+      --radius:10px;
+      /* page + hero sky gradients (light) */
+      --sky1:#eef6ff; --sky2:#e1f0ff; --sky3:#d2e9ff; --sky4:#b8dcff;
+      --hero1:#dff1ff; --hero2:#c7e7ff; --hero3:#aedaff; --hero4:#92ccff;
+      /* cloud tints (light) */
+      --cloud-near:255,255,255; --cloud-far:255,255,255;
+    }
+    [data-theme="dark"]{
+      /* Stormy variant */
+      --bg:#0a1016; --fg:#e6eef5; --muted:#a6b7c2; --card:rgba(14,20,28,.65); --line:#163243; --pri:#7cc9ff; --pri-2:#44a5ff; --glow:0 12px 32px rgba(68,165,255,.22);
+      /* page + hero sky gradients (dark) */
+      --sky1:#0b1220; --sky2:#0e1928; --sky3:#0f2233; --sky4:#103047;
+      --hero1:#112033; --hero2:#0f2a45; --hero3:#0c3558; --hero4:#0a3d66;
+      /* cloud tints (dark) */
+      --cloud-near:220,235,255; --cloud-far:200,220,245;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0; font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif; color:var(--fg); overflow-x:hidden;
+      /* page sky via variables so dark mode swaps automatically */
+      background: linear-gradient(180deg, var(--sky1) 0%, var(--sky2) 40%, var(--sky3) 70%, var(--sky4) 100%);
+    }
+    /* Floating cloud layers */
+    body::before, body::after{
+      content:""; position:fixed; left:-10%; right:-10%; top:-15vh; height:70vh; z-index:-1; pointer-events:none; filter: blur(6px) saturate(1.02);
+      opacity:.75;
+      background:
+        radial-gradient(40% 35% at 15% 55%, rgba(255,255,255,.8) 0 60%, transparent 61%),
+        radial-gradient(26% 22% at 28% 40%, rgba(255,255,255,.82) 0 60%, transparent 61%),
+        radial-gradient(30% 26% at 45% 60%, rgba(255,255,255,.8) 0 60%, transparent 61%),
+        radial-gradient(32% 28% at 70% 50%, rgba(255,255,255,.84) 0 60%, transparent 61%),
+        radial-gradient(24% 20% at 85% 60%, rgba(255,255,255,.76) 0 60%, transparent 61%);
+      animation: drift 38s linear infinite;
+    }
+    body::after{ top:10vh; height:60vh; opacity:.6; filter: blur(10px) saturate(1); animation-duration: 58s; animation-direction: reverse; }
+    @keyframes drift{ to{ transform: translateX(6%) } }
+
+    body.no-scroll{overflow:hidden}
+
+    /* Scroll progress */
+    #progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--pri),#8bd3ff);z-index:2000;transition:width .1s linear}
+
+    /* =========================
+       Header / Navbar
+       ========================= */
+    header{
+      display:flex; justify-content:space-between; align-items:center; padding:.75rem var(--padX);
+      background:rgba(255,255,255,.62); border-bottom:1px solid var(--line); backdrop-filter:blur(14px) saturate(1.1);
+      box-shadow:var(--glow); position:fixed; inset:0 0 auto; z-index:1000; border-radius:0 0 var(--radius) var(--radius);
+    }
+    [data-theme="dark"] header{ background:rgba(12,20,28,.6) }
+    header h2{ font-size:1.3rem; color:var(--pri-2); margin:0; letter-spacing:.35px; font-weight:600 }
+
+    .menu-btn{ --bar:24px; width:40px; height:40px; display:grid; place-items:center; background:linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.6)); border:1px solid var(--line); border-radius:8px; box-shadow:var(--glow); cursor:pointer; margin:0 }
+    [data-theme="dark"] .menu-btn{ background:rgba(18,28,36,.7) }
+    .menu-btn .bars{ position:relative; width:var(--bar); height:2px; background:transparent }
+    .menu-btn .bars::before,.menu-btn .bars::after{ content:""; position:absolute; left:0; width:var(--bar); height:2px; background:var(--pri-2); transition: transform .25s ease, top .25s ease, opacity .2s ease }
+    .menu-btn .bars::before{ top:-6px } .menu-btn .bars::after{ top:6px }
+    .menu-btn.active .bars::before{ top:0; transform:rotate(45deg) } .menu-btn.active .bars::after{ top:0; transform:rotate(-45deg) }
+
+    nav.sidebar{ position:absolute; top:100%; right:var(--padX); width:220px; background:rgba(255,255,255,.9); border:1px solid var(--line); border-radius:10px; box-shadow:var(--glow); display:none; flex-direction:column; transform:translateY(-8px); opacity:0; transition:all .22s ease; backdrop-filter:blur(12px) saturate(1.1) }
+    [data-theme="dark"] nav.sidebar{ background:rgba(15,26,36,.75) }
+    nav.sidebar.active{ display:flex; transform:translateY(0); opacity:1 }
+    nav.sidebar a{ color:var(--fg); padding:.9rem 1rem; text-decoration:none; border-bottom:1px solid var(--line); font-weight:500 }
+    nav.sidebar a:hover, nav.sidebar a:focus-visible{ background:linear-gradient(90deg, rgba(58,160,243,.18), rgba(139,211,255,.18)); color:#08324a }
+
+    .toggles{ display:flex; gap:.6rem; align-items:center }
+    .toggle-dark{ padding:.65rem 1.05rem; border-radius:10px; border:1px solid var(--line); background:var(--card); color:var(--pri-2); cursor:pointer; font-weight:500; box-shadow:var(--glow); position:relative; overflow:hidden }
+    .toggle-dark .icon{$1inset:4px; display:grid; place-items:center; transition: transform .35s ease, opacity .25s ease; }
+    .toggle-dark .icon i{ font-size:1.15rem; }
+    .toggle-dark .moon-icon{ opacity:1; transform: scale(1) rotate(0deg); color:#93c5fd; }
+    [data-theme="dark"] .toggle-dark .moon-icon{ color:#7cc9ff; }
+    @keyframes bang{ 0%{ transform:scale(.8); } 60%{ transform:scale(1.15); } 100%{ transform:scale(1); } }
+    .toggle-dark .bang{ animation: bang .35s ease both; }
+    .toggle-dark .icon{$1inset:4px; display:grid; place-items:center; transition: transform .35s ease, opacity .25s ease; }
+    .toggle-dark .moon-icon{ opacity:1; transform: scale(1) rotate(0deg); color:#93c5fd; }
+    [data-theme="dark"] .toggle-dark .moon-icon{ color:#7cc9ff; }
+    @keyframes bang{ 0%{ transform:scale(.8); } 60%{ transform:scale(1.15); } 100%{ transform:scale(1); } }
+    .toggle-dark .bang{ animation: bang .35s ease both; }
+
+    /* Offset for anchored sections */
+    section,.hero,footer{ scroll-margin-top:calc(var(--hdr) + 10px) }
+
+    /* =========================
+       Hero — cloudy sky
+       ========================= */
+    .hero{
+      height:88vh; width:100vw; max-width:100%; margin:0; padding-top:var(--hdr);
+      display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; position:relative; overflow:hidden;
+      /* hero sky gradient via variables */
+      background:
+        radial-gradient(60% 42% at 50% 14%, rgba(255,255,255,.65), transparent 62%),
+        linear-gradient(180deg, var(--hero1) 0%, var(--hero2) 38%, var(--hero3) 70%, var(--hero4) 100%);
+    }
+    .hero::before{$1opacity:.45; filter: blur(16px);
+      background:
+        radial-gradient(42% 30% at 12% 28%, rgba(255,255,255,.75) 0 62%, transparent 63%),
+        radial-gradient(40% 28% at 34% 20%, rgba(255,255,255,.7) 0 62%, transparent 63%),
+        radial-gradient(38% 26% at 66% 24%, rgba(255,255,255,.72) 0 62%, transparent 63%),
+        radial-gradient(44% 32% at 84% 34%, rgba(255,255,255,.78) 0 62%, transparent 63%);
+      animation: driftSlow 80s linear infinite;
+    }
+    .hero::after{$1opacity:.82; filter: blur(12px);
+      background:
+        radial-gradient(36% 26% at 18% 72%, rgba(255,255,255,.96) 0 64%, transparent 65%),
+        radial-gradient(30% 22% at 46% 64%, rgba(255,255,255,.98) 0 64%, transparent 65%),
+        radial-gradient(34% 24% at 74% 68%, rgba(255,255,255,.95) 0 64%, transparent 65%);
+      animation: driftFast 50s linear infinite alternate;
+    }
+    @keyframes driftSlow{ to{ transform: translateX(8%); } }
+    @keyframes driftFast{ to{ transform: translateX(-6%); } }
+
+    /* Dark-mode cloud adjustments */
+    [data-theme="dark"] body::before, [data-theme="dark"] body::after{
+      background:
+        radial-gradient(40% 35% at 15% 55%, rgba(var(--cloud-far),.25) 0 60%, transparent 61%),
+        radial-gradient(26% 22% at 28% 40%, rgba(var(--cloud-far),.28) 0 60%, transparent 61%),
+        radial-gradient(30% 26% at 45% 60%, rgba(var(--cloud-far),.26) 0 60%, transparent 61%),
+        radial-gradient(32% 28% at 70% 50%, rgba(var(--cloud-far),.30) 0 60%, transparent 61%),
+        radial-gradient(24% 20% at 85% 60%, rgba(var(--cloud-far),.22) 0 60%, transparent 61%);
+    }
+    [data-theme="dark"] .hero::before{
+      background:
+        radial-gradient(42% 30% at 12% 28%, rgba(var(--cloud-far),.28) 0 62%, transparent 63%),
+        radial-gradient(40% 28% at 34% 20%, rgba(var(--cloud-far),.24) 0 62%, transparent 63%),
+        radial-gradient(38% 26% at 66% 24%, rgba(var(--cloud-far),.26) 0 62%, transparent 63%);
+    }
+    [data-theme="dark"] .hero::after{
+      background:
+        radial-gradient(36% 26% at 18% 72%, rgba(var(--cloud-near),.45) 0 64%, transparent 65%),
+        radial-gradient(30% 22% at 46% 64%, rgba(var(--cloud-near),.48) 0 64%, transparent 65%),
+        radial-gradient(34% 24% at 74% 68%, rgba(var(--cloud-near),.42) 0 64%, transparent 65%);
+    }
+    /* Dark-mode hero gradient override */
+    [data-theme="dark"] .hero{
+      background:
+        radial-gradient(60% 42% at 50% 14%, rgba(255,255,255,.25), transparent 62%),
+        linear-gradient(180deg, var(--hero1) 0%, var(--hero2) 38%, var(--hero3) 70%, var(--hero4) 100%);
+    }
+
+    .hero h1{ font-size:3.05rem; color:#ffffff; text-shadow:0 2px 12px rgba(0,0,0,.16); margin:0 1rem .7rem; font-weight:700; letter-spacing:.2px; position:relative; z-index:1 }
+    .hero p{ font-size:1.06rem; color:rgba(255,255,255,.94); text-shadow:0 1px 6px rgba(0,0,0,.10); margin:0 1rem 1.4rem; position:relative; z-index:1 }
+    .cta-btn{ background:#ffffff; color:#1c7fcd; padding:.95rem 2.2rem; border-radius:10px; text-decoration:none; font-size:1rem; font-weight:700; box-shadow:0 8px 22px rgba(28,127,205,.14); transition: transform .2s ease, filter .2s ease  text-decoration:none; font-size:1rem; font-weight:700; box-shadow:0 10px 26px rgba(28,127,205,.16); transition: transform .2s ease, filter .2s ease }
+    .cta-btn:hover{ transform: translateY(-2px); filter:saturate(1.05) }
+
+    /* =========================
+       Sections — airy, compact
+       ========================= */
+    section{ max-width:1040px; margin:2.8rem auto 1.4rem; padding:1.25rem; text-align:center; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:0 6px 18px rgba(58,160,243,.06) }
+    section.visible{ opacity:1; transform:none }
+    section h2{ margin:.2rem 0 1rem; color:#08324a; font-weight:700; letter-spacing:.25px; position:relative }
+    section h2::after{ content:""; display:block; width:56px; height:8px; margin:.55rem auto 0; transform:skewX(-28deg); background:linear-gradient(90deg, var(--pri), #8bd3ff); border-radius:5px }
+
+    /* =========================
+       Projects — glass clouds
+       ========================= */
+    .project-slider{ position:relative; width:100%; overflow:hidden; border-radius:var(--radius) }
+    .track{ display:flex; gap:2%; will-change:transform; transform:translateZ(0) }
+    .card{ flex:0 0 65%; background:var(--card); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; text-align:left; box-shadow:var(--glow); transition: transform .25s ease }
+    .card:hover{ transform: translateY(-2px) }
+    .card img{ width:100%; height:260px; object-fit:cover; display:block; filter:saturate(1.03) contrast(1.02) }
+    .card .content{ padding:1rem 1.15rem }
+    .badges{ display:flex; flex-wrap:wrap; gap:.45rem; margin:.35rem 0 .9rem }
+    .badge{ font-size:.72rem; padding:.22rem .55rem; border-radius:8px; border:1px solid var(--line); color:#0b3a59; background:linear-gradient(135deg, rgba(201,235,255,.55), rgba(226,245,255,.55))  border:1px solid var(--line); color:#0b3a59; background:linear-gradient(135deg, rgba(201,235,255,.55), rgba(226,245,255,.55)) }
+    .actions{ display:flex; gap:.6rem }
+    .btn-link{ display:inline-flex; align-items:center; gap:.4rem; padding:.55rem .85rem; border-radius:10px; border:1px solid var(--line); background:var(--card); color:#0b3a59; text-decoration:none; font-weight:600  border:1px solid var(--line); background:var(--card); color:#0b3a59; text-decoration:none; font-weight:600 }
+    .btn-link:hover{ background:linear-gradient(135deg, rgba(201,235,255,.45), rgba(226,245,255,.45)) }
+
+    /* =========================
+       Footer
+       ========================= */
+    footer{ text-align:center; padding:1.4rem 1rem; background:linear-gradient(180deg, transparent, rgba(255,255,255,.55)); border-top:1px solid var(--line) }
+    .social-icons a{ color:var(--pri-2); margin:0 .55rem; font-size:1.35rem }
+
+    /* =========================
+       Responsive tweaks
+       ========================= */
+    @media (max-width:768px){
+      :root{ --hdr:64px; --padX:1rem }
+      header{ padding:.6rem var(--padX) }
+      .hero h1{ font-size:2rem }
+      .hero p{ font-size:.95rem }
+      section{ padding:1.05rem; margin:2.4rem 1rem 1.1rem }
+      .card{ flex-basis:80% }
+      .card img{ height:220px }
+    }
+  </style>
+</head>
+<body>
+  <div id="progress" aria-hidden="true"></div>
+  <header id="header">
+    <h2>Gia Huy Luu</h2>
+    <div class="toggles">
+      <button class="toggle-dark" id="darkToggle" aria-pressed="false" title="Toggle dark mode">
+        <span class="icon moon-icon"><i class="fa-solid fa-moon"></i></span>
+      </button>
+      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-label="Open menu"><span class="bars"></span></button>
+    </div>
+    <nav class="sidebar" id="sidebar" role="menu">
+      <a href="./index.html" role="menuitem">Home</a>
+      <a href="./Contact" role="menuitem">Contact</a>
+    </nav>
+  </header>
+<section class="hero" id="hero">
+<h1>Let's work together</h1>
+<p>Have a project in mind? Send a message and I’ll get back to you.</p>
+</section>
+</section>
+
+<!-- Contact Section (no form) -->
+<section id="contact">
+  <h2>Contact</h2>
+  <div class="wrap" style="max-width:960px;margin:1.6rem auto 0;padding:0 1.25rem 1.25rem 1.25rem;">
+    <div class="card" style="background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--glow);">
+      <div class="card-inner" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:1.1rem;">
+        <div>
+          <h3 style="margin:.2rem 0 1rem;color:#08324a;">Reach out</h3>
+          <p style="color:var(--muted);margin:.25rem 0 1rem">
+            
+          </p>
+          <div class="actions" style="display:flex;gap:.6rem;flex-wrap:wrap;">
+            <a class="btn-link" href="mailto:giahuyluu2002@gmail.com"><i class="fa-solid fa-envelope"></i> Email</a>
+            <a class="btn-link" href="https://linkedin.com" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+            <a class="btn-link" href="https://github.com" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+          </div>
+        </div>
+
+        <div class="aside" style="background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.4));border:1px dashed var(--line);border-radius:10px;padding:1rem;">
+          <ul style="list-style:none;padding:0;margin:0;display:grid;gap:.55rem;">
+            <li style="display:flex;align-items:center;gap:.6rem;color:#0b3a59">
+              <i class="fa-solid fa-location-dot" style="color:var(--pri-2)"></i> 9961 121st Street, Surrey, BC V3V 4L1
+            </li>
+            <li style="display:flex;align-items:center;gap:.6rem;color:#0b3a59">
+              <i class="fa-solid fa-phone" style="color:var(--pri-2)"></i> (236) 862-8011   
+            </li>
+            <li style="display:flex;align-items:center;gap:.6rem;color:#0b3a59">
+              <i class="fa-solid fa-briefcase" style="color:var(--pri-2)"></i> giahuyluu2002@gmail.com  
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <footer id="contact">
+    <div class="social-icons">
+      <a href="https://github.com" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      <a href="https://linkedin.com" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="mailto:giahuyluu2002@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+    </div>
+    <p>© 2025 Portfolio. Crafted with care and precision.</p>
+  </footer>
+
+  <script>
+  (function(){
+    // ===== Dark mode (scoped to avoid re-declaration errors) =====
+    const rootEl = document.documentElement;
+    const darkBtn = document.getElementById('darkToggle');
+    const saved = localStorage.getItem('theme');
+    if (saved) rootEl.setAttribute('data-theme', saved);
+    darkBtn.setAttribute('aria-pressed', saved === 'dark');
+    const moonIcon = document.querySelector('.moon-icon');
+    function pop(el){ if(!el) return; el.classList.add('bang'); setTimeout(()=>el.classList.remove('bang'), 360); }
+    darkBtn.addEventListener('click', () => {
+      const next = rootEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      rootEl.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      darkBtn.setAttribute('aria-pressed', next === 'dark');
+      if(next === 'dark') pop(moonIcon);
+    });
+
+    // ===== Menu toggle + body lock =====
+    const menuBtn = document.getElementById('menuBtn');
+    const sidebar = document.getElementById('sidebar');
+    function toggleMenu(force){
+      const open = typeof force === 'boolean' ? force : !sidebar.classList.contains('active');
+      sidebar.classList.toggle('active', open);
+      menuBtn.classList.toggle('active', open);
+      menuBtn.setAttribute('aria-expanded', String(open));
+      document.body.classList.toggle('no-scroll', open);
+    }
+    menuBtn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleMenu(); });
+    sidebar.addEventListener('click', (e)=>{ if(e.target.matches('a')) toggleMenu(false); e.stopPropagation(); });
+    document.addEventListener('click', ()=>{ if(sidebar.classList.contains('active')) toggleMenu(false); });
+
+    // ===== Fade-in observer =====
+    const io = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }); }, {threshold:.2});
+    document.querySelectorAll('section, footer').forEach(el=>io.observe(el));
+
+    // ===== Scroll progress =====
+    const progress = document.getElementById('progress');
+    function updateProgress(){
+      const h=document.documentElement; const scrolled=h.scrollTop||document.body.scrollTop; const height=h.scrollHeight-h.clientHeight; const pct=height?(scrolled/height)*100:0; progress.style.width=pct+'%';
+    }
+    document.addEventListener('scroll', updateProgress, {passive:true});
+    updateProgress();
+
+    // ===== Project slider (infinite marquee) =====
+    const slider=document.getElementById('slider');
+    const track=document.getElementById('track');
+    const baseCards=Array.from(track.children);
+    function ensureWidth(){ let guard=0; while(track.scrollWidth < (slider.clientWidth*3) && guard<20){ baseCards.forEach(c=>track.appendChild(c.cloneNode(true))); guard++; } }
+    ensureWidth();
+    let x=0; let speed=.6; const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function step(){ x-=speed; const half=track.scrollWidth/2; if(Math.abs(x)>=half) x=0; track.style.transform=`translateX(${x}px)`; requestAnimationFrame(step); }
+    if(!prefersReduced) requestAnimationFrame(step);
+    slider.addEventListener('mouseenter', ()=>{ if(!prefersReduced) speed=0; });
+    slider.addEventListener('mouseleave', ()=>{ if(!prefersReduced) speed=.6; });
+    window.addEventListener('resize', ensureWidth);
+
+    // ===== Simple smoke tests (non-destructive) =====
+    try {
+      console.assert(!!document.getElementById('darkToggle'), 'darkToggle button missing');
+      console.assert(!!document.getElementById('menuBtn'), 'menuBtn missing');
+      console.assert(getComputedStyle(document.documentElement).getPropertyValue('--hero1').trim() !== '', 'CSS var --hero1 missing');
+      console.assert(typeof prefersReduced === 'boolean' || typeof prefersReduced === 'object', 'prefers-reduced-motion query failed');
+      console.assert(track.children.length >= 3, 'slider has insufficient cards');
+    } catch(e) { console.warn('Smoke tests error:', e); }
+  })();
+  </script>
+</body>
+</html>
